@@ -1,0 +1,13 @@
+C:\Users\MGSam\AulaAlgoritmosAvancados\henrique_samii_DR3_AT\Questao2\bin\Debug\netcoreapp3.1\Questao2.exe
+C:\Users\MGSam\AulaAlgoritmosAvancados\henrique_samii_DR3_AT\Questao2\bin\Debug\netcoreapp3.1\Questao2.deps.json
+C:\Users\MGSam\AulaAlgoritmosAvancados\henrique_samii_DR3_AT\Questao2\bin\Debug\netcoreapp3.1\Questao2.runtimeconfig.json
+C:\Users\MGSam\AulaAlgoritmosAvancados\henrique_samii_DR3_AT\Questao2\bin\Debug\netcoreapp3.1\Questao2.runtimeconfig.dev.json
+C:\Users\MGSam\AulaAlgoritmosAvancados\henrique_samii_DR3_AT\Questao2\bin\Debug\netcoreapp3.1\Questao2.dll
+C:\Users\MGSam\AulaAlgoritmosAvancados\henrique_samii_DR3_AT\Questao2\bin\Debug\netcoreapp3.1\Questao2.pdb
+C:\Users\MGSam\AulaAlgoritmosAvancados\henrique_samii_DR3_AT\Questao2\obj\Debug\netcoreapp3.1\Questao2.csprojAssemblyReference.cache
+C:\Users\MGSam\AulaAlgoritmosAvancados\henrique_samii_DR3_AT\Questao2\obj\Debug\netcoreapp3.1\Questao2.csproj.CoreCompileInputs.cache
+C:\Users\MGSam\AulaAlgoritmosAvancados\henrique_samii_DR3_AT\Questao2\obj\Debug\netcoreapp3.1\Questao2.AssemblyInfoInputs.cache
+C:\Users\MGSam\AulaAlgoritmosAvancados\henrique_samii_DR3_AT\Questao2\obj\Debug\netcoreapp3.1\Questao2.AssemblyInfo.cs
+C:\Users\MGSam\AulaAlgoritmosAvancados\henrique_samii_DR3_AT\Questao2\obj\Debug\netcoreapp3.1\Questao2.dll
+C:\Users\MGSam\AulaAlgoritmosAvancados\henrique_samii_DR3_AT\Questao2\obj\Debug\netcoreapp3.1\Questao2.pdb
+C:\Users\MGSam\AulaAlgoritmosAvancados\henrique_samii_DR3_AT\Questao2\obj\Debug\netcoreapp3.1\Questao2.genruntimeconfig.cache
