@@ -7,8 +7,8 @@ namespace Questao2
     {
         static void Main(string[] args)
         {
-            int[] moedas = {50,25,10,5,1};
-            int troco = 96;
+            int[] moedas = {25,21,10,5,1};
+            int troco = 63;
 
             //0. Versão iterativo e guloso
             /*List<int> trocoMoedas = trocoEmMoedas(troco,moedas);
@@ -22,6 +22,47 @@ namespace Questao2
             System.Console.WriteLine(trocoMoedasRecusivo);
 
             // 2.Versão programação dinâmica
+            Array.Reverse(moedas);
+            List<int> trocoMoedasDinamico = trocoMoedasDinamicoMinMoedas(troco,moedas);
+        }
+
+        private static List<int> trocoMoedasDinamicoMinMoedas(int troco, int[] moedas)
+        {
+            int trocoDeZero = 1; 
+
+            int[,] tabelaDeOpcoes = new int[moedas.Length,troco + trocoDeZero];
+            //setar torco de array de moedas
+            for (int i = 0; i < tabelaDeOpcoes.GetLength(0); i++)
+            {
+                for (int j = 0; j < tabelaDeOpcoes.GetLength(1); j++)
+                {
+                    int moeda = moedas[i]; 
+                    if (j == 0)
+                    {
+                        tabelaDeOpcoes[i,j] = 0;
+                    }
+                    else if (moeda > j)
+                    {
+                        tabelaDeOpcoes[i,j] = tabelaDeOpcoes[i-1,j];
+                    }
+                    else
+                    {
+                        //min para escolher a melhor opcao
+                        tabelaDeOpcoes[i,j] =min(tabelaDeOpcoes[i-1,j] ,1 + tabelaDeOpcoes[i,j-moeda]);
+                    }
+                }
+            }
+            //Pegar min mun de moedas
+            throw new NotImplementedException();
+        }
+
+        private static int min(int v1, int v2)
+        {
+            if (v2 > v1)
+            {
+                return v1;
+            }
+            return v2;
         }
 
         private static string trocoEmMoedasRecusivo(int troco, int[] moedas, int posicao)

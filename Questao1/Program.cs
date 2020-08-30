@@ -11,6 +11,10 @@ namespace Questao1
         private static int valorMax = 0;
         private static int capacidadeMochila = 20;
         private static int numDeGeracoes = 10;
+        
+        private static readonly int percentagemMax = 1000;
+        
+        private static readonly int percentagemMin = 0;
         private static int percentagemDeMutacao = 5;
         static void Main(string[] args)
         {
