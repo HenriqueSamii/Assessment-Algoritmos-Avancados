@@ -24,6 +24,10 @@ namespace Questao2
             // 2.Versão programação dinâmica
             Array.Reverse(moedas);
             List<int> trocoMoedasDinamico = trocoMoedasDinamicoMinMoedas(troco,moedas);
+            foreach (var moeda in trocoMoedasDinamico)
+            {
+                System.Console.Write(moeda + " ");
+            }
         }
 
         private static List<int> trocoMoedasDinamicoMinMoedas(int troco, int[] moedas)
@@ -48,12 +52,37 @@ namespace Questao2
                     else
                     {
                         //min para escolher a melhor opcao
-                        tabelaDeOpcoes[i,j] =min(tabelaDeOpcoes[i-1,j] ,1 + tabelaDeOpcoes[i,j-moeda]);
+                        if (i == 0)
+                        {
+                            tabelaDeOpcoes[i,j] =1 + tabelaDeOpcoes[i,j-moeda];
+                        }
+                        else
+                        {
+                            tabelaDeOpcoes[i,j] =min(tabelaDeOpcoes[i-1,j] ,1 + tabelaDeOpcoes[i,j-moeda]);
+                        }
                     }
                 }
             }
             //Pegar min mun de moedas
-            throw new NotImplementedException();
+            int ponteiroVetical = tabelaDeOpcoes.GetLength(0)-1, ponteiroHorizontal = tabelaDeOpcoes.GetLength(1)-1;
+            int numMinDeMoedas = tabelaDeOpcoes[ponteiroVetical,ponteiroHorizontal];
+            List<int> trocoMoedasRetorno = new List<int>();
+            while (numMinDeMoedas > 0)
+            {
+                if (tabelaDeOpcoes[ponteiroVetical-1,ponteiroHorizontal] <= numMinDeMoedas)
+                {
+                    ponteiroVetical--;
+                }else
+                {
+                    trocoMoedasRetorno.Add(moedas[ponteiroVetical]);
+                    numMinDeMoedas--;
+                    while (tabelaDeOpcoes[ponteiroVetical,ponteiroHorizontal] != numMinDeMoedas)
+                    {
+                        ponteiroHorizontal--;
+                    }
+                }
+            }
+            return trocoMoedasRetorno;
         }
 
         private static int min(int v1, int v2)
