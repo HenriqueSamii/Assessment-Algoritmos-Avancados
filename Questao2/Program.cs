@@ -8,7 +8,7 @@ namespace Questao2
         static void Main(string[] args)
         {
             int[] moedas = {25,21,10,5,1};
-            int troco = 63;
+            int troco = 64;
 
             //0. Versão iterativo e guloso
             /*List<int> trocoMoedas = trocoEmMoedas(troco,moedas);
@@ -51,35 +51,46 @@ namespace Questao2
                     }
                     else
                     {
-                        //min para escolher a melhor opcao
                         if (i == 0)
                         {
                             tabelaDeOpcoes[i,j] =1 + tabelaDeOpcoes[i,j-moeda];
                         }
                         else
                         {
+                            //min para escolher a melhor opcao
                             tabelaDeOpcoes[i,j] =min(tabelaDeOpcoes[i-1,j] ,1 + tabelaDeOpcoes[i,j-moeda]);
                         }
                     }
                 }
             }
+            // for (int i = 0; i < tabelaDeOpcoes.GetLength(0); i++)
+            // {
+            //     for (int j = 0; j < tabelaDeOpcoes.GetLength(1); j++)
+            //     {
+            //         System.Console.Write(tabelaDeOpcoes[i,j] + "\t");
+            //     }
+            //     System.Console.WriteLine();
+            // }
             //Pegar min mun de moedas
             int ponteiroVetical = tabelaDeOpcoes.GetLength(0)-1, ponteiroHorizontal = tabelaDeOpcoes.GetLength(1)-1;
             int numMinDeMoedas = tabelaDeOpcoes[ponteiroVetical,ponteiroHorizontal];
             List<int> trocoMoedasRetorno = new List<int>();
-            while (numMinDeMoedas > 0)
+            while (numMinDeMoedas != 0)
             {
-                if (tabelaDeOpcoes[ponteiroVetical-1,ponteiroHorizontal] <= numMinDeMoedas)
-                {
-                    ponteiroVetical--;
-                }else
+                if (ponteiroVetical-1 < 0)
                 {
                     trocoMoedasRetorno.Add(moedas[ponteiroVetical]);
-                    numMinDeMoedas--;
-                    while (tabelaDeOpcoes[ponteiroVetical,ponteiroHorizontal] != numMinDeMoedas)
-                    {
-                        ponteiroHorizontal--;
-                    }
+                    ponteiroHorizontal -= moedas[ponteiroVetical];
+                    numMinDeMoedas = tabelaDeOpcoes[ponteiroVetical,ponteiroHorizontal];
+                }
+                else if (tabelaDeOpcoes[ponteiroVetical-1,ponteiroHorizontal] > numMinDeMoedas)
+                {
+                    trocoMoedasRetorno.Add(moedas[ponteiroVetical]);
+                    ponteiroHorizontal -= moedas[ponteiroVetical];
+                    numMinDeMoedas = tabelaDeOpcoes[ponteiroVetical,ponteiroHorizontal];
+                }else
+                {
+                    ponteiroVetical--;
                 }
             }
             return trocoMoedasRetorno;
@@ -87,11 +98,11 @@ namespace Questao2
 
         private static int min(int v1, int v2)
         {
-            if (v2 > v1)
+            if (v2 < v1)
             {
-                return v1;
+                return v2;
             }
-            return v2;
+            return v1;
         }
 
         private static string trocoEmMoedasRecusivo(int troco, int[] moedas, int posicao)
