@@ -9,5 +9,16 @@ namespace Questao1
             this.Tipo = tipo;
             this.Quntidade = 1;
         }
+        public TipoItem(Item tipo, int quantidade)
+        {
+            this.Tipo = tipo;
+            this.Quntidade = quantidade;
+        }
+        public int peso() {
+            return (this.Quntidade*this.Tipo.Peso);
+        }
+        public int valor() {
+            return (this.Quntidade*this.Tipo.Valor);
+        }
     }
 }

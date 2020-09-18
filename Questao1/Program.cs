@@ -41,8 +41,8 @@ namespace Questao1
         private static List<Item> mochilaGenetica(List<TipoItem> itemQuantidade)
         {
             int geracao = 0;
-            List<TipoItem> pais = new List<TipoItem>{};
-            List<TipoItem> resultadoTipoItem = mochilaGeneticaGerar(itemQuantidade,geracao,pais);
+            List<List<TipoItem>> pais = new List<List<TipoItem>>();
+            List<TipoItem> resultadoTipoItem = mochilaGeneticaGerar(itemQuantidade, geracao, pais);
             List<Item> resultado = new List<Item>();
             foreach (var tipoItem in resultadoTipoItem)
             {
@@ -54,13 +54,102 @@ namespace Questao1
             return resultado;
         }
 
-        private static List<TipoItem> mochilaGeneticaGerar(List<TipoItem> itemQuantidade, int geracao, List<TipoItem> pais)
+        private static List<TipoItem> mochilaGeneticaGerar(List<TipoItem> itemQuantidade, int geracao, List<List<TipoItem>> pais)
         {
-            //int tamanhaDaPopulacaoInicial = 20;
-            //int tamanhaDaPopulacaoAposCruzamento = 30;
+            List<List<TipoItem>> populacaoInicial = pais;
+
+            /// Gerar população inicial  
+            for (int i = 0; i < 20 - populacaoInicial.Count; i++)
+            {
+                List<TipoItem> holderCromosoma = new List<TipoItem>();
+                int holderPeso = -1;
+                while (holderPeso < 0 || holderPeso > capacidadeMochila)
+                {
+                    holderCromosoma.Clear();
+                    foreach (var item in itemQuantidade)
+                    {
+                        Random random = new Random();
+                        int novaQuantidade = random.Next(0, item.Quntidade);
+                        holderCromosoma.Add(new TipoItem(item.Tipo, novaQuantidade));
+                    }
+                    holderPeso = 0;
+
+                    foreach (var item in holderCromosoma)
+                    {
+                        holderPeso += item.peso();
+                    }
+                }
+                populacaoInicial.Add(holderCromosoma);
+            }
+
+            ///Ordenar população  
+            populacaoInicial = ordenarPopulacao(populacaoInicial);
+            int popOrgMax = 0;
+            foreach (var item in populacaoInicial[populacaoInicial.Count-1])
+            {
+                popOrgMax += item.valor();
+            }
+            if (popOrgMax == valorMax)
+            {
+                return populacaoInicial[populacaoInicial.Count-1];
+            }
+
+            ///Seleção 
+
+
+            ///Crossover 
+
+
+            ///Mutação 
+
             // Random random = new Random();
             // int randomNumber = random.Next(0, 1000);
-            throw new NotImplementedException();
+
+            if (geracao < numDeGeracoes)
+            {
+                return mochilaGeneticaGerar(itemQuantidade, geracao, pais);
+            }
+            return null;
+        }
+
+        private static List<List<TipoItem>> ordenarPopulacao(List<List<TipoItem>> populacaoInicial)
+        {
+            List<List<TipoItem>> retorno = new List<List<TipoItem>>();
+            foreach (var listaDeTipoItem in populacaoInicial)
+            {
+                if (retorno.Count == 0)
+                {
+                    retorno.Add(listaDeTipoItem);
+                }
+                else
+                {
+                    int valorHolder = 0;
+                    foreach (var item in listaDeTipoItem)
+                    {
+                        valorHolder += item.valor();
+                    }
+                    for (int i = 0; i <= retorno.Count; i++)
+                    {
+                        if (retorno.Count == i)
+                        {
+                            retorno.Add(listaDeTipoItem);
+                        }
+                        else
+                        {
+                            int valorHolderTemp = 0;
+                            foreach (var item in retorno[i])
+                            {
+                                valorHolderTemp += item.valor();
+                            }
+                            if (valorHolderTemp > valorHolder)
+                            {
+                                retorno.Insert(i,listaDeTipoItem);
+                            }
+                        }
+                    }
+                }
+            }
+            return retorno;
         }
 
         private static List<TipoItem> itemQuntudadeSort(Item[] itens)
@@ -70,7 +159,7 @@ namespace Questao1
             {
                 valorMax += item.Valor;
                 int indexItemQuantidade = -1;
-                for (int i = 0; i < itemQuantidade.Count-1; i++)
+                for (int i = 0; i < itemQuantidade.Count - 1; i++)
                 {
                     if (itemQuantidade[i].Tipo == item)
                     {
@@ -91,18 +180,3 @@ namespace Questao1
         }
     }
 }
-
-// Indivíduo: Vetor de 6 posições (genes) onde cada gene vale 0 ou 1.
-// Cálculo da aptidão: por indivíduo. A aptidão é o somatório dos valores dos genes.
-// Tamanho da população inicial: 20
-// Tamanho da população após cruzamento: 30
-// Tamanho da população após seleção: 20 – os mais aptos, sem critério de desempate
-
-// Regra de mutação:
-// Dados os novos indivíduos formados, selecione-os aleatoriamente e até 50% dos novos indivíduos, para serem modificados.
-//  A probabilidade de mutação é de 0,5%. Se ocorrer mutação, até 3 genes do indivíduo podem sofrer mutação. 
-// A quantidade de genes e quais devem ser escolhidos aleatoriamente (figura c.)
-
-// Regra de ordenação da população:
-// Mantenha a população, sempre ao fim do processo de cálculo de aptidão, ordenada, em um vetor.
-//  Use um método eficiente de ordenação que tenha no máximo O(n log n) de complexidade de pior caso.
