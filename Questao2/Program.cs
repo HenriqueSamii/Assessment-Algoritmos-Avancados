@@ -8,7 +8,7 @@ namespace Questao2
         static void Main(string[] args)
         {
             int[] moedas = {25,21,10,5,1};
-            int troco = 64;
+            int troco = 63;
 
             //0. Versão iterativo e guloso
             /*List<int> trocoMoedas = trocoEmMoedas(troco,moedas);
@@ -77,13 +77,7 @@ namespace Questao2
             List<int> trocoMoedasRetorno = new List<int>();
             while (numMinDeMoedas != 0)
             {
-                if (ponteiroVetical-1 < 0)
-                {
-                    trocoMoedasRetorno.Add(moedas[ponteiroVetical]);
-                    ponteiroHorizontal -= moedas[ponteiroVetical];
-                    numMinDeMoedas = tabelaDeOpcoes[ponteiroVetical,ponteiroHorizontal];
-                }
-                else if (tabelaDeOpcoes[ponteiroVetical-1,ponteiroHorizontal] > numMinDeMoedas)
+                if (ponteiroVetical-1 < 0 || tabelaDeOpcoes[ponteiroVetical-1,ponteiroHorizontal] > numMinDeMoedas)
                 {
                     trocoMoedasRetorno.Add(moedas[ponteiroVetical]);
                     ponteiroHorizontal -= moedas[ponteiroVetical];

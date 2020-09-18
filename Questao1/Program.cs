@@ -9,13 +9,13 @@ namespace Questao1
         //Problema da mochila - Genético
 
         private static int valorMax = 0;
-        private static int capacidadeMochila = 20;
-        private static int numDeGeracoes = 10;
-        
+        private static readonly int capacidadeMochila = 20;
+        private static readonly int numDeGeracoes = 10;
         private static readonly int percentagemMax = 1000;
-        
         private static readonly int percentagemMin = 0;
-        private static int percentagemDeMutacao = 5;
+        private static readonly int percentagemDeMutacao = 5;
+        private static readonly int tamanhaDaPopulacaoInicial = 20;
+        private static readonly int numeroDeGeracoes = 1000;
         static void Main(string[] args)
         {
             Item[] itens = {new Item(1,1),new Item(3,2),new Item(5,6),new Item(5,6),new Item(4,3),
@@ -25,10 +25,39 @@ namespace Questao1
 
             List<TipoItem> itemQuantidade = itemQuntudadeSort(itens);
             List<Item> mochila = mochilaGenetica(itemQuantidade);
+            int pessoTotal = 0;
+            int valorTotal = 0;
+            System.Console.WriteLine("Mocila Com os itens:");
+            foreach (var item in mochila)
+            {
+                pessoTotal += item.Peso;
+                valorTotal += item.Valor;
+                System.Console.WriteLine("-Valor " + item.Valor + " com o peso de " + item.Peso);
+            }
+            System.Console.WriteLine("Valor Total: " + valorTotal);
+            System.Console.WriteLine("Peso Total: " + pessoTotal);
         }
 
         private static List<Item> mochilaGenetica(List<TipoItem> itemQuantidade)
         {
+            int geracao = 0;
+            List<TipoItem> pais = new List<TipoItem>{};
+            List<TipoItem> resultadoTipoItem = mochilaGeneticaGerar(itemQuantidade,geracao,pais);
+            List<Item> resultado = new List<Item>();
+            foreach (var tipoItem in resultadoTipoItem)
+            {
+                for (int i = 0; i < tipoItem.Quntidade; i++)
+                {
+                    resultado.Add(tipoItem.Tipo);
+                }
+            }
+            return resultado;
+        }
+
+        private static List<TipoItem> mochilaGeneticaGerar(List<TipoItem> itemQuantidade, int geracao, List<TipoItem> pais)
+        {
+            //int tamanhaDaPopulacaoInicial = 20;
+            //int tamanhaDaPopulacaoAposCruzamento = 30;
             // Random random = new Random();
             // int randomNumber = random.Next(0, 1000);
             throw new NotImplementedException();
