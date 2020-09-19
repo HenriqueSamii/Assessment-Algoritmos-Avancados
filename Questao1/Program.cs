@@ -95,11 +95,42 @@ namespace Questao1
             }
 
             ///Seleção 
+            List<int> indexMelhores = new List<int>();
+            List<int> indexPiores = new List<int>();
 
+            int medadePopulacao = populacaoInicial.Count/2;
+            int metadeDaMetade = medadePopulacao/2;
+            var a = new Random();
+            while (indexMelhores.Count != metadeDaMetade)
+            {
+                int index = a.Next(0, medadePopulacao-1);
+                if (!indexMelhores.Contains(index)){
+                    indexMelhores.Add(index);
+                }
+            }
+
+            while (indexPiores.Count != medadePopulacao-metadeDaMetade)
+            {
+                int index = a.Next(medadePopulacao, populacaoInicial.Count-1);
+                if (!indexPiores.Contains(index)){
+                    indexPiores.Add(index);
+                }
+            }
 
             ///Crossover 
-
-
+            int quantidadeDeCrossovers = 0
+            if (indexMelhores.Count < indexPiores.Count)
+            {
+                quantidadeDeCrossovers = indexMelhores.Count;
+            }
+            else
+            {
+                quantidadeDeCrossovers = indexPiores.Count;
+            }
+            for (int i = 0; i < quantidadeDeCrossovers; i++)
+            {
+                
+            }
             ///Mutação 
 
             // Random random = new Random();
