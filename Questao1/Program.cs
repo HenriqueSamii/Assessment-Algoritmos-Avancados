@@ -24,18 +24,24 @@ namespace Questao1
                             new Item(5,6),new Item(4,3),new Item(5,6),new Item(2,2),new Item(4,3)};
 
             List<TipoItem> itemQuantidade = itemQuntudadeSort(itens);
-            List<Item> mochila = mochilaGenetica(itemQuantidade);
-            int pessoTotal = 0;
-            int valorTotal = 0;
-            System.Console.WriteLine("Mocila Com os itens:");
-            foreach (var item in mochila)
+            System.Console.WriteLine($"Valor maximo: {valorMax}");
+            foreach (var item in itemQuantidade)
             {
-                pessoTotal += item.Peso;
-                valorTotal += item.Valor;
-                System.Console.WriteLine("-Valor " + item.Valor + " com o peso de " + item.Peso);
+                System.Console.WriteLine($"Valor: {item.Tipo.Valor} Peso de um item:{item.Tipo.Peso}"+
+                                        $" Qantidade {item.Quntidade} Peso total: {item.peso()} Valor total: {item.valor()}");
             }
-            System.Console.WriteLine("Valor Total: " + valorTotal);
-            System.Console.WriteLine("Peso Total: " + pessoTotal);
+            // List<Item> mochila = mochilaGenetica(itemQuantidade);
+            // int pessoTotal = 0;
+            // int valorTotal = 0;
+            // System.Console.WriteLine("Mocila Com os itens:");
+            // foreach (var item in mochila)
+            // {
+            //     pessoTotal += item.Peso;
+            //     valorTotal += item.Valor;
+            //     System.Console.WriteLine("-Valor " + item.Valor + " com o peso de " + item.Peso);
+            // }
+            // System.Console.WriteLine("Valor Total: " + valorTotal);
+            // System.Console.WriteLine("Peso Total: " + pessoTotal);
         }
 
         private static List<Item> mochilaGenetica(List<TipoItem> itemQuantidade)
@@ -60,14 +66,14 @@ namespace Questao1
             int geracao = 0;
             List<List<TipoItem>> pais = new List<List<TipoItem>>();
             List<List<TipoItem>> geracoesActuais = new List<List<TipoItem>>();
-            while (geracao < numeroDeGeracoes)
+            while (geracao < 1)//numeroDeGeracoes
             {
                 /// Gerar população inicial
                 geracoesActuais = new List<List<TipoItem>>(pais);
                 for (int i = 0; i < tamanhaDaPopulacaoInicial - geracoesActuais.Count; i++)
                 {
                     List<TipoItem> holderCromosoma = new List<TipoItem>();
-                    int holderPeso = 21;
+                    int holderPeso = capacidadeMochila+1;
                     while (holderPeso > capacidadeMochila)
                     {
                         holderCromosoma.Clear();
@@ -307,20 +313,15 @@ namespace Questao1
             foreach (var item in itens)
             {
                 valorMax += item.Valor;
-                int indexItemQuantidade = -1;
-                for (int i = 0; i < itemQuantidade.Count - 1; i++)
-                {
-                    if (itemQuantidade[i].Tipo == item)
+                bool itemExiste = false;
+                for (int i = 0; i < itemQuantidade.Count; i++){
+                    if (itemQuantidade[i].Tipo.Peso == item.Peso && itemQuantidade[i].Tipo.Valor == item.Valor)
                     {
-                        indexItemQuantidade = i;
-                        break;
+                        itemQuantidade[i].Quntidade += 1;
+                        itemExiste = true;
                     }
                 }
-                if (indexItemQuantidade > -1)
-                {
-                    itemQuantidade[indexItemQuantidade].Quntidade++;
-                }
-                else
+                if (!itemExiste)
                 {
                     itemQuantidade.Add(new TipoItem(item));
                 }
