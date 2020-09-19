@@ -85,40 +85,42 @@ namespace Questao1
             ///Ordenar população  
             populacaoInicial = ordenarPopulacao(populacaoInicial);
             int popOrgMax = 0;
-            foreach (var item in populacaoInicial[populacaoInicial.Count-1])
+            foreach (var item in populacaoInicial[populacaoInicial.Count - 1])
             {
                 popOrgMax += item.valor();
             }
             if (popOrgMax == valorMax)
             {
-                return populacaoInicial[populacaoInicial.Count-1];
+                return populacaoInicial[populacaoInicial.Count - 1];
             }
 
             ///Seleção 
             List<int> indexMelhores = new List<int>();
             List<int> indexPiores = new List<int>();
 
-            int medadePopulacao = populacaoInicial.Count/2;
-            int metadeDaMetade = medadePopulacao/2;
+            int medadePopulacao = populacaoInicial.Count / 2;
+            int metadeDaMetade = medadePopulacao / 2;
             var a = new Random();
-            while (indexMelhores.Count != metadeDaMetade)
+            while (indexPiores.Count != metadeDaMetade)
             {
-                int index = a.Next(0, medadePopulacao-1);
-                if (!indexMelhores.Contains(index)){
-                    indexMelhores.Add(index);
-                }
-            }
-
-            while (indexPiores.Count != medadePopulacao-metadeDaMetade)
-            {
-                int index = a.Next(medadePopulacao, populacaoInicial.Count-1);
-                if (!indexPiores.Contains(index)){
+                int index = a.Next(0, medadePopulacao - 1);
+                if (!indexPiores.Contains(index))
+                {
                     indexPiores.Add(index);
                 }
             }
 
+            while (indexMelhores.Count != medadePopulacao - metadeDaMetade)
+            {
+                int index = a.Next(medadePopulacao, populacaoInicial.Count - 1);
+                if (!indexMelhores.Contains(index))
+                {
+                    indexMelhores.Add(index);
+                }
+            }
+
             ///Crossover 
-            int quantidadeDeCrossovers = 0
+            int quantidadeDeCrossovers = 0;
             if (indexMelhores.Count < indexPiores.Count)
             {
                 quantidadeDeCrossovers = indexMelhores.Count;
@@ -129,7 +131,47 @@ namespace Questao1
             }
             for (int i = 0; i < quantidadeDeCrossovers; i++)
             {
-                
+                //genesTestados ver se ultrapasoou a quandtidade de possiveis poissibilidades e nao encontrou solucao
+                //List<int> genesTestados = new List<int>();
+                int numeroDeTentativas = 0;
+                while (true)
+                {
+                    int pesoGen1 = 0;
+                    int pesoGen2 = 0;
+                    var gene1 = new List<TipoItem>(populacaoInicial[indexMelhores[i]]);
+                    var gene2 = new List<TipoItem>(populacaoInicial[indexPiores[i]]);
+                    int crossIndex1 = a.Next(0, gene1.Count - 1);
+                    int crossIndex2 = a.Next(0, gene2.Count - 1);
+                    TipoItem tipoItemHolder1 = new TipoItem(gene1[crossIndex1].Tipo, gene1[crossIndex1].Quntidade);
+                    TipoItem tipoItemHolder2 = new TipoItem(gene2[crossIndex1].Tipo, gene2[crossIndex1].Quntidade);
+                    gene1[crossIndex1] = tipoItemHolder2;
+                    gene2[crossIndex1] = tipoItemHolder1;
+                    if (crossIndex1 != crossIndex2)
+                    {
+                        TipoItem tipoItemHolder3 = new TipoItem(gene1[crossIndex2].Tipo, gene1[crossIndex2].Quntidade);
+                        TipoItem tipoItemHolder4 = new TipoItem(gene2[crossIndex2].Tipo, gene2[crossIndex2].Quntidade);
+                        gene1[crossIndex2] = tipoItemHolder4;
+                        gene2[crossIndex2] = tipoItemHolder3;
+                    }
+
+                    for (int x = 0; x < gene2.Count; x++)
+                    {
+                        pesoGen1 += gene1[x].peso();
+                        pesoGen2 += gene2[x].peso();
+                    }
+
+                    if (pesoGen1 < capacidadeMochila && pesoGen2 < capacidadeMochila)
+                    {
+                        populacaoInicial[indexMelhores[i]] = gene1;
+                        populacaoInicial[indexPiores[i]] = gene2;
+                        break;
+                    }
+                    if (numeroDeTentativas == 50)
+                    {
+                        break;
+                    }
+                    numeroDeTentativas++;
+                }
             }
             ///Mutação 
 
@@ -174,7 +216,7 @@ namespace Questao1
                             }
                             if (valorHolderTemp > valorHolder)
                             {
-                                retorno.Insert(i,listaDeTipoItem);
+                                retorno.Insert(i, listaDeTipoItem);
                             }
                         }
                     }
