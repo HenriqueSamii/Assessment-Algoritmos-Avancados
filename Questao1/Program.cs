@@ -10,7 +10,7 @@ namespace Questao1
 
         private static int valorMax = 0;
         private static readonly int capacidadeMochila = 20;
-        private static readonly int numDeGeracoes = 10;
+        //private static readonly int numDeGeracoes = 10;
         private static readonly int percentagemMax = 1000;
         private static readonly int percentagemMin = 0;
         private static readonly int percentagemDeMutacao = 5;
@@ -40,9 +40,10 @@ namespace Questao1
 
         private static List<Item> mochilaGenetica(List<TipoItem> itemQuantidade)
         {
-            int geracao = 0;
+            // int geracao = 0;
             List<List<TipoItem>> pais = new List<List<TipoItem>>();
-            List<TipoItem> resultadoTipoItem = mochilaGeneticaGerar(itemQuantidade, geracao, pais);
+            // List<TipoItem> resultadoTipoItem = mochilaGeneticaGerar(itemQuantidade, geracao, pais);
+            List<TipoItem> resultadoTipoItem = mochilaGeneticaGerar(itemQuantidade);
             List<Item> resultado = new List<Item>();
             foreach (var tipoItem in resultadoTipoItem)
             {
@@ -54,136 +55,211 @@ namespace Questao1
             return resultado;
         }
 
-        private static List<TipoItem> mochilaGeneticaGerar(List<TipoItem> itemQuantidade, int geracao, List<List<TipoItem>> pais)
+        private static List<TipoItem> mochilaGeneticaGerar(List<TipoItem> itemQuantidade)
         {
-            List<List<TipoItem>> populacaoInicial = pais;
-
-            /// Gerar população inicial  
-            for (int i = 0; i < 20 - populacaoInicial.Count; i++)
+            int geracao = 0;
+            List<List<TipoItem>> pais = new List<List<TipoItem>>();
+            List<List<TipoItem>> geracoesActuais = new List<List<TipoItem>>();
+            while (geracao < numeroDeGeracoes)
             {
-                List<TipoItem> holderCromosoma = new List<TipoItem>();
-                int holderPeso = -1;
-                while (holderPeso < 0 || holderPeso > capacidadeMochila)
+                /// Gerar população inicial
+                geracoesActuais = new List<List<TipoItem>>(pais);
+                for (int i = 0; i < tamanhaDaPopulacaoInicial - geracoesActuais.Count; i++)
                 {
-                    holderCromosoma.Clear();
-                    foreach (var item in itemQuantidade)
+                    List<TipoItem> holderCromosoma = new List<TipoItem>();
+                    int holderPeso = 21;
+                    while (holderPeso > capacidadeMochila)
                     {
-                        Random random = new Random();
-                        int novaQuantidade = random.Next(0, item.Quntidade);
-                        holderCromosoma.Add(new TipoItem(item.Tipo, novaQuantidade));
+                        holderCromosoma.Clear();
+                        foreach (var item in itemQuantidade)
+                        {
+                            Random random = new Random();
+                            int novaQuantidade = random.Next(0, item.Quntidade);
+                            holderCromosoma.Add(new TipoItem(item.Tipo, novaQuantidade));
+                        }
+                        holderPeso = 0;
+
+                        foreach (var item in holderCromosoma)
+                        {
+                            holderPeso += item.peso();
+                        }
                     }
-                    holderPeso = 0;
-
-                    foreach (var item in holderCromosoma)
-                    {
-                        holderPeso += item.peso();
-                    }
-                }
-                populacaoInicial.Add(holderCromosoma);
-            }
-
-            ///Ordenar população  
-            populacaoInicial = ordenarPopulacao(populacaoInicial);
-            int popOrgMax = 0;
-            foreach (var item in populacaoInicial[populacaoInicial.Count - 1])
-            {
-                popOrgMax += item.valor();
-            }
-            if (popOrgMax == valorMax)
-            {
-                return populacaoInicial[populacaoInicial.Count - 1];
-            }
-
-            ///Seleção 
-            List<int> indexMelhores = new List<int>();
-            List<int> indexPiores = new List<int>();
-
-            int medadePopulacao = populacaoInicial.Count / 2;
-            int metadeDaMetade = medadePopulacao / 2;
-            var a = new Random();
-            while (indexPiores.Count != metadeDaMetade)
-            {
-                int index = a.Next(0, medadePopulacao - 1);
-                if (!indexPiores.Contains(index))
-                {
-                    indexPiores.Add(index);
+                    geracoesActuais.Add(holderCromosoma);
                 }
             }
-
-            while (indexMelhores.Count != medadePopulacao - metadeDaMetade)
-            {
-                int index = a.Next(medadePopulacao, populacaoInicial.Count - 1);
-                if (!indexMelhores.Contains(index))
-                {
-                    indexMelhores.Add(index);
-                }
-            }
-
-            ///Crossover 
-            int quantidadeDeCrossovers = 0;
-            if (indexMelhores.Count < indexPiores.Count)
-            {
-                quantidadeDeCrossovers = indexMelhores.Count;
-            }
-            else
-            {
-                quantidadeDeCrossovers = indexPiores.Count;
-            }
-            for (int i = 0; i < quantidadeDeCrossovers; i++)
-            {
-                //genesTestados ver se ultrapasoou a quandtidade de possiveis poissibilidades e nao encontrou solucao
-                //List<int> genesTestados = new List<int>();
-                int numeroDeTentativas = 0;
-                while (true)
-                {
-                    int pesoGen1 = 0;
-                    int pesoGen2 = 0;
-                    var gene1 = new List<TipoItem>(populacaoInicial[indexMelhores[i]]);
-                    var gene2 = new List<TipoItem>(populacaoInicial[indexPiores[i]]);
-                    int crossIndex1 = a.Next(0, gene1.Count - 1);
-                    int crossIndex2 = a.Next(0, gene2.Count - 1);
-                    TipoItem tipoItemHolder1 = new TipoItem(gene1[crossIndex1].Tipo, gene1[crossIndex1].Quntidade);
-                    TipoItem tipoItemHolder2 = new TipoItem(gene2[crossIndex1].Tipo, gene2[crossIndex1].Quntidade);
-                    gene1[crossIndex1] = tipoItemHolder2;
-                    gene2[crossIndex1] = tipoItemHolder1;
-                    if (crossIndex1 != crossIndex2)
-                    {
-                        TipoItem tipoItemHolder3 = new TipoItem(gene1[crossIndex2].Tipo, gene1[crossIndex2].Quntidade);
-                        TipoItem tipoItemHolder4 = new TipoItem(gene2[crossIndex2].Tipo, gene2[crossIndex2].Quntidade);
-                        gene1[crossIndex2] = tipoItemHolder4;
-                        gene2[crossIndex2] = tipoItemHolder3;
-                    }
-
-                    for (int x = 0; x < gene2.Count; x++)
-                    {
-                        pesoGen1 += gene1[x].peso();
-                        pesoGen2 += gene2[x].peso();
-                    }
-
-                    if (pesoGen1 < capacidadeMochila && pesoGen2 < capacidadeMochila)
-                    {
-                        populacaoInicial[indexMelhores[i]] = gene1;
-                        populacaoInicial[indexPiores[i]] = gene2;
-                        break;
-                    }
-                    if (numeroDeTentativas == 50)
-                    {
-                        break;
-                    }
-                    numeroDeTentativas++;
-                }
-            }
-            ///Mutação 
-
-            // Random random = new Random();
-            // int randomNumber = random.Next(0, 1000);
-
-            if (geracao < numDeGeracoes)
-            {
-                return mochilaGeneticaGerar(itemQuantidade, geracao, pais);
-            }
-            return null;
+            return geracoesActuais[0];
         }
+
+        // private static List<TipoItem> mochilaGeneticaGerar(List<TipoItem> itemQuantidade, int geracao, List<List<TipoItem>> pais)
+        // {
+        //     while (true)
+        //     {
+        //         List<List<TipoItem>> populacaoInicial = pais;
+
+        //         /// Gerar população inicial  
+        //         for (int i = 0; i < tamanhaDaPopulacaoInicial - populacaoInicial.Count; i++)
+        //         {
+        //             List<TipoItem> holderCromosoma = new List<TipoItem>();
+        //             int holderPeso = -1;
+        //             while (holderPeso < 0 || holderPeso > capacidadeMochila)
+        //             {
+        //                 holderCromosoma.Clear();
+        //                 foreach (var item in itemQuantidade)
+        //                 {
+        //                     Random random = new Random();
+        //                     int novaQuantidade = random.Next(0, item.Quntidade);
+        //                     holderCromosoma.Add(new TipoItem(item.Tipo, novaQuantidade));
+        //                 }
+        //                 holderPeso = 0;
+
+        //                 foreach (var item in holderCromosoma)
+        //                 {
+        //                     holderPeso += item.peso();
+        //                 }
+        //             }
+        //             populacaoInicial.Add(holderCromosoma);
+        //         }
+
+        //         ///Ordenar população  
+        //         populacaoInicial = ordenarPopulacao(populacaoInicial);
+        //         int popOrgMax = 0;
+        //         foreach (var item in populacaoInicial[populacaoInicial.Count - 1])
+        //         {
+        //             popOrgMax += item.valor();
+        //         }
+        //         if (popOrgMax == valorMax)
+        //         {
+        //             return populacaoInicial[populacaoInicial.Count - 1];
+        //         }
+
+        //         ///Seleção 
+        //         List<int> indexMelhores = new List<int>();
+        //         List<int> indexPiores = new List<int>();
+
+        //         int medadePopulacao = populacaoInicial.Count / 2;
+        //         int metadeDaMetade = medadePopulacao / 2;
+        //         var a = new Random();
+        //         while (indexPiores.Count != metadeDaMetade)
+        //         {
+        //             int index = a.Next(0, medadePopulacao - 1);
+        //             if (!indexPiores.Contains(index))
+        //             {
+        //                 indexPiores.Add(index);
+        //             }
+        //         }
+
+        //         while (indexMelhores.Count != medadePopulacao - metadeDaMetade)
+        //         {
+        //             int index = a.Next(medadePopulacao, populacaoInicial.Count - 1);
+        //             if (!indexMelhores.Contains(index))
+        //             {
+        //                 indexMelhores.Add(index);
+        //             }
+        //         }
+
+        //         ///Crossover 
+        //         int quantidadeDeCrossovers = 0;
+        //         if (indexMelhores.Count < indexPiores.Count)
+        //         {
+        //             quantidadeDeCrossovers = indexMelhores.Count;
+        //         }
+        //         else
+        //         {
+        //             quantidadeDeCrossovers = indexPiores.Count;
+        //         }
+        //         for (int i = 0; i < quantidadeDeCrossovers; i++)
+        //         {
+        //             //genesTestados ver se ultrapasoou a quandtidade de possiveis poissibilidades e nao encontrou solucao
+        //             //List<int> genesTestados = new List<int>();
+        //             int numeroDeTentativas = 0;
+        //             while (true)
+        //             {
+        //                 int pesoGen1 = 0;
+        //                 int pesoGen2 = 0;
+        //                 var gene1 = new List<TipoItem>(populacaoInicial[indexMelhores[i]]);
+        //                 var gene2 = new List<TipoItem>(populacaoInicial[indexPiores[i]]);
+        //                 int crossIndex1 = a.Next(0, gene1.Count - 1);
+        //                 int crossIndex2 = a.Next(0, gene2.Count - 1);
+        //                 TipoItem tipoItemHolder1 = new TipoItem(gene1[crossIndex1].Tipo, gene1[crossIndex1].Quntidade);
+        //                 TipoItem tipoItemHolder2 = new TipoItem(gene2[crossIndex1].Tipo, gene2[crossIndex1].Quntidade);
+        //                 gene1[crossIndex1] = tipoItemHolder2;
+        //                 gene2[crossIndex1] = tipoItemHolder1;
+        //                 if (crossIndex1 != crossIndex2)
+        //                 {
+        //                     TipoItem tipoItemHolder3 = new TipoItem(gene1[crossIndex2].Tipo, gene1[crossIndex2].Quntidade);
+        //                     TipoItem tipoItemHolder4 = new TipoItem(gene2[crossIndex2].Tipo, gene2[crossIndex2].Quntidade);
+        //                     gene1[crossIndex2] = tipoItemHolder4;
+        //                     gene2[crossIndex2] = tipoItemHolder3;
+        //                 }
+
+        //                 for (int x = 0; x < gene2.Count; x++)
+        //                 {
+        //                     pesoGen1 += gene1[x].peso();
+        //                     pesoGen2 += gene2[x].peso();
+        //                 }
+
+        //                 if (pesoGen1 < capacidadeMochila && pesoGen2 < capacidadeMochila)
+        //                 {
+        //                     populacaoInicial[indexMelhores[i]] = gene1;
+        //                     populacaoInicial[indexPiores[i]] = gene2;
+        //                     break;
+        //                 }
+        //                 if (numeroDeTentativas == 50)
+        //                 {
+        //                     break;
+        //                 }
+        //                 numeroDeTentativas++;
+        //             }
+        //         }
+        //         ///Mutação 
+        //         List<int> indexDeMutacao = new List<int>();
+        //         while (indexDeMutacao.Count != medadePopulacao)
+        //         {
+        //             int index = a.Next(0, populacaoInicial.Count - 1);
+        //             if (!indexDeMutacao.Contains(index))
+        //             {
+        //                 indexDeMutacao.Add(index);
+        //             }
+        //         }
+        //         foreach (var index in indexDeMutacao)
+        //         {
+        //             //Random random = new Random();
+        //             int percentagemMutacao = a.Next(percentagemMin, percentagemMax);
+        //             if (percentagemMutacao <= percentagemDeMutacao)
+        //             {
+        //                 while (true)
+        //                 {
+        //                     int pesoMutacao = 0;
+        //                     var geneMutado = new List<TipoItem>(populacaoInicial[index]);
+        //                     int itemMutadoIndex = a.Next(0, geneMutado.Count - 1);
+        //                     int quantidadeNova = a.Next(0, itemQuantidade[itemMutadoIndex].Quntidade);
+        //                     TipoItem geneMutadoTipoItem = new TipoItem(itemQuantidade[itemMutadoIndex].Tipo, quantidadeNova);
+        //                     geneMutado[itemMutadoIndex] = geneMutadoTipoItem;
+        //                     foreach (var item in geneMutado)
+        //                     {
+        //                         pesoMutacao += item.peso();
+        //                     }
+        //                     if (pesoMutacao <= capacidadeMochila)
+        //                     {
+        //                         populacaoInicial[index] = geneMutado;
+        //                         break;
+        //                     }
+        //                 }
+        //             }
+        //         }
+
+        //         ///Proximo
+        //         populacaoInicial = ordenarPopulacao(populacaoInicial);
+        //         if (geracao == numeroDeGeracoes)
+        //         {
+        //             return populacaoInicial[0];
+        //         }
+        //         List<List<TipoItem>> novosPais = new List<List<TipoItem>>();
+        //         geracao += 1;
+        //         novosPais = populacaoInicial.GetRange(0, (populacaoInicial.Count / 2) - 1);
+        //         pais = novosPais;
+        //     }
+        // }
 
         private static List<List<TipoItem>> ordenarPopulacao(List<List<TipoItem>> populacaoInicial)
         {
