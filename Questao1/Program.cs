@@ -24,41 +24,25 @@ namespace Questao1
                             new Item(5,6),new Item(4,3),new Item(5,6),new Item(2,2),new Item(4,3)};
 
             List<TipoItem> itemQuantidade = itemQuntudadeSort(itens);
-            System.Console.WriteLine($"Valor maximo: {valorMax}");
-            foreach (var item in itemQuantidade)
-            {
-                System.Console.WriteLine($"Valor: {item.Tipo.Valor} Peso de um item:{item.Tipo.Peso}"+
-                                        $" Qantidade {item.Quntidade} Peso total: {item.peso()} Valor total: {item.valor()}");
-            }
-            // List<Item> mochila = mochilaGenetica(itemQuantidade);
-            // int pessoTotal = 0;
-            // int valorTotal = 0;
-            // System.Console.WriteLine("Mocila Com os itens:");
+            // System.Console.WriteLine($"Valor maximo: {valorMax}");
+            // foreach (var item in itemQuantidade)
+            // {
+            //     System.Console.WriteLine($"Valor: {item.Tipo.Valor} Peso de um item:{item.Tipo.Peso}"+
+            //                             $" Qantidade {item.Quntidade} Peso total: {item.peso()} Valor total: {item.valor()}");
+            // }
+            List<TipoItem> mochila = mochilaGeneticaGerar(itemQuantidade);
+            // System.Console.WriteLine($"Valor maximo: {valorMax}");
+            // int valorMochilaFinal = 0;
+            // int pesoMochilaFinal = 0;
             // foreach (var item in mochila)
             // {
-            //     pessoTotal += item.Peso;
-            //     valorTotal += item.Valor;
-            //     System.Console.WriteLine("-Valor " + item.Valor + " com o peso de " + item.Peso);
+            //     System.Console.WriteLine($"Valor do item: {item.Tipo.Valor} - Peso do item:{item.Tipo.Peso} - "+
+            //                             $"Qantidade: {item.Quntidade} - Peso total: {item.peso()} - Valor total: {item.valor()}");
+            //     valorMochilaFinal += item.valor();
+            //     pesoMochilaFinal += item.peso();
             // }
-            // System.Console.WriteLine("Valor Total: " + valorTotal);
-            // System.Console.WriteLine("Peso Total: " + pessoTotal);
-        }
-
-        private static List<Item> mochilaGenetica(List<TipoItem> itemQuantidade)
-        {
-            // int geracao = 0;
-            List<List<TipoItem>> pais = new List<List<TipoItem>>();
-            // List<TipoItem> resultadoTipoItem = mochilaGeneticaGerar(itemQuantidade, geracao, pais);
-            List<TipoItem> resultadoTipoItem = mochilaGeneticaGerar(itemQuantidade);
-            List<Item> resultado = new List<Item>();
-            foreach (var tipoItem in resultadoTipoItem)
-            {
-                for (int i = 0; i < tipoItem.Quntidade; i++)
-                {
-                    resultado.Add(tipoItem.Tipo);
-                }
-            }
-            return resultado;
+            // System.Console.WriteLine($"Peso total Mochila:{pesoMochilaFinal}");
+            // System.Console.WriteLine($"Valor total Mochila:{valorMochilaFinal}");
         }
 
         private static List<TipoItem> mochilaGeneticaGerar(List<TipoItem> itemQuantidade)
