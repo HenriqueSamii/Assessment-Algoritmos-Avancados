@@ -63,7 +63,7 @@ namespace Questao1
                 for (int i = 0; i < LopCriacao; i++)
                 {
                     List<TipoItem> holderCromosoma = new List<TipoItem>();
-                    int holderPeso = capacidadeMochila+1;
+                    int holderPeso = capacidadeMochila + 1;
                     while (holderPeso > capacidadeMochila)
                     {
                         holderCromosoma.Clear();
@@ -92,7 +92,7 @@ namespace Questao1
                     // System.Console.WriteLine($"item criado- valor: {holderValorStack} - peso: {holderPessoStack} - count actual {geracoesActuais.Count}");
                     ///////////////////////////////////////////////////////////
                 }
-                //geracoesActuais = ordenarPopulacao(geracoesActuais);
+                geracoesActuais = ordenarPopulacao(geracoesActuais);
                 pais = geracoesActuais.GetRange(0, (geracoesActuais.Count / 2));
                 ////////////////////   test /////////////////////////////
                 foreach (var gera in geracoesActuais)
@@ -112,7 +112,58 @@ namespace Questao1
             }
             return geracoesActuais[0];
         }
+        private static List<List<TipoItem>> ordenarPopulacao(List<List<TipoItem>> populacaoInicial)
+        {
+            List<List<TipoItem>> retorno = new List<List<TipoItem>>(populacaoInicial);
+            List<TipoItem> temp = new List<TipoItem>();
+            for (int i = 0; i < retorno.Count; i++)
+            {
+                for (int j = 0; j < retorno.Count - 1; j++)
+                {
+                    int totalTipoItem1 = 0;
+                    int totalTipoItem2 = 0;
+                    foreach (var item in retorno[j])
+                    {
+                        totalTipoItem1 += item.valor();
+                    }
+                    foreach (var item in retorno[j+1])
+                    {
+                        totalTipoItem2 += item.valor();
+                    }
 
+                if (totalTipoItem1 > totalTipoItem2)
+                    {
+                        temp = retorno[j];
+                        retorno[j] = retorno[j+1];
+                        retorno[j+1] = temp;
+                    }
+                }
+            }
+            return retorno;
+        }
+
+        private static List<TipoItem> itemQuntudadeSort(Item[] itens)
+        {
+            List<TipoItem> itemQuantidade = new List<TipoItem>();
+            foreach (var item in itens)
+            {
+                valorMax += item.Valor;
+                bool itemExiste = false;
+                for (int i = 0; i < itemQuantidade.Count; i++)
+                {
+                    if (itemQuantidade[i].Tipo.Peso == item.Peso && itemQuantidade[i].Tipo.Valor == item.Valor)
+                    {
+                        itemQuantidade[i].Quntidade += 1;
+                        itemExiste = true;
+                    }
+                }
+                if (!itemExiste)
+                {
+                    itemQuantidade.Add(new TipoItem(item));
+                }
+            }
+            return itemQuantidade;
+        }
         // private static List<TipoItem> mochilaGeneticaGerar(List<TipoItem> itemQuantidade, int geracao, List<List<TipoItem>> pais)
         // {
         //     while (true)
@@ -283,67 +334,5 @@ namespace Questao1
         //         pais = novosPais;
         //     }
         // }
-
-        private static List<List<TipoItem>> ordenarPopulacao(List<List<TipoItem>> populacaoInicial)
-        {
-            List<List<TipoItem>> retorno = new List<List<TipoItem>>();
-            foreach (var listaDeTipoItem in populacaoInicial)
-            {
-                if (retorno.Count == 0)
-                {
-                    retorno.Add(listaDeTipoItem);
-                }
-                else
-                {
-                    int valorHolder = 0;
-                    foreach (var item in listaDeTipoItem)
-                    {
-                        valorHolder += item.valor();
-                    }
-                    for (int i = 0; i <= retorno.Count; i++)
-                    {
-                        if (retorno.Count == i)
-                        {
-                            retorno.Add(listaDeTipoItem);
-                        }
-                        else
-                        {
-                            int valorHolderTemp = 0;
-                            foreach (var item in retorno[i])
-                            {
-                                valorHolderTemp += item.valor();
-                            }
-                            if (valorHolderTemp > valorHolder)
-                            {
-                                retorno.Insert(i, listaDeTipoItem);
-                            }
-                        }
-                    }
-                }
-            }
-            return retorno;
-        }
-
-        private static List<TipoItem> itemQuntudadeSort(Item[] itens)
-        {
-            List<TipoItem> itemQuantidade = new List<TipoItem>();
-            foreach (var item in itens)
-            {
-                valorMax += item.Valor;
-                bool itemExiste = false;
-                for (int i = 0; i < itemQuantidade.Count; i++){
-                    if (itemQuantidade[i].Tipo.Peso == item.Peso && itemQuantidade[i].Tipo.Valor == item.Valor)
-                    {
-                        itemQuantidade[i].Quntidade += 1;
-                        itemExiste = true;
-                    }
-                }
-                if (!itemExiste)
-                {
-                    itemQuantidade.Add(new TipoItem(item));
-                }
-            }
-            return itemQuantidade;
-        }
     }
 }
