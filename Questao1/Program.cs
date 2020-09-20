@@ -51,7 +51,7 @@ namespace Questao1
             int geracao = 0;
             List<List<TipoItem>> pais = new List<List<TipoItem>>();
             List<List<TipoItem>> geracoesActuais = new List<List<TipoItem>>();
-            while (geracao < 1)//numeroDeGeracoes
+            while (geracao < numeroDeGeracoes)//numeroDeGeracoes  //1
             {
                 /// Gerar população inicial
                 geracoesActuais = new List<List<TipoItem>>(pais);
@@ -60,7 +60,7 @@ namespace Questao1
                 {
                     LopCriacao -= geracoesActuais.Count;
                 }
-                System.Console.WriteLine(geracoesActuais.Count);
+                //System.Console.WriteLine(geracoesActuais.Count);
                 for (int i = 0; i < LopCriacao; i++)
                 {
                     List<TipoItem> holderCromosoma = new List<TipoItem>();
