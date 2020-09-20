@@ -45,7 +45,7 @@ namespace Questao1
             // System.Console.WriteLine($"Valor total Mochila:{valorMochilaFinal}");
         }
 
-        private static List<TipoItem> mochilaGeneticaGerar(List<TipoItem> itemQuantidade)
+        private static List<TipoItem> mochilaGeneticaGerar(List<TipoItem> itemQuantidadeMaxima)
         {
             int geracao = 0;
             List<List<TipoItem>> pais = new List<List<TipoItem>>();
@@ -54,14 +54,20 @@ namespace Questao1
             {
                 /// Gerar população inicial
                 geracoesActuais = new List<List<TipoItem>>(pais);
-                for (int i = 0; i < tamanhaDaPopulacaoInicial - geracoesActuais.Count; i++)
+                int LopCriacao = tamanhaDaPopulacaoInicial;
+                if (geracoesActuais.Count > 0)
+                {
+                    LopCriacao -= geracoesActuais.Count;
+                }
+                System.Console.WriteLine(geracoesActuais.Count);
+                for (int i = 0; i < LopCriacao; i++)
                 {
                     List<TipoItem> holderCromosoma = new List<TipoItem>();
                     int holderPeso = capacidadeMochila+1;
                     while (holderPeso > capacidadeMochila)
                     {
                         holderCromosoma.Clear();
-                        foreach (var item in itemQuantidade)
+                        foreach (var item in itemQuantidadeMaxima)
                         {
                             Random random = new Random();
                             int novaQuantidade = random.Next(0, item.Quntidade);
@@ -75,7 +81,34 @@ namespace Questao1
                         }
                     }
                     geracoesActuais.Add(holderCromosoma);
+                    ////////////////////   test /////////////////////////////
+                    // int holderPessoStack = 0;
+                    // int holderValorStack = 0;
+                    // foreach (var item in holderCromosoma)
+                    // {
+                    //     holderPessoStack += item.peso();
+                    //     holderValorStack += item.valor();
+                    // }
+                    // System.Console.WriteLine($"item criado- valor: {holderValorStack} - peso: {holderPessoStack} - count actual {geracoesActuais.Count}");
+                    ///////////////////////////////////////////////////////////
                 }
+                //geracoesActuais = ordenarPopulacao(geracoesActuais);
+                pais = geracoesActuais.GetRange(0, (geracoesActuais.Count / 2));
+                ////////////////////   test /////////////////////////////
+                foreach (var gera in geracoesActuais)
+                {
+                    int holderPessoStack = 0;
+                    int holderValorStack = 0;
+                    foreach (var item in gera)
+                    {
+                        holderPessoStack += item.peso();
+                        holderValorStack += item.valor();
+                    }
+                    System.Console.WriteLine($"item criado- valor: {holderValorStack} - peso: {holderPessoStack} - count actual {geracoesActuais.Count}");
+                }
+                System.Console.WriteLine();
+                ///////////////////////////////////////////////////////////
+                geracao++;
             }
             return geracoesActuais[0];
         }
