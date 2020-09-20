@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Questao1
 {
@@ -37,7 +38,7 @@ namespace Questao1
             int pesoMochilaFinal = 0;
             foreach (var item in mochila)
             {
-                System.Console.WriteLine($"Valor do item: {item.Tipo.Valor} - Peso do item:{item.Tipo.Peso} - "+
+                System.Console.WriteLine($"Valor do item: {item.Tipo.Valor} - Peso do item:{item.Tipo.Peso} - " +
                                         $"Qantidade: {item.Quntidade} - Peso total: {item.peso()} - Valor total: {item.valor()}");
                 valorMochilaFinal += item.valor();
                 pesoMochilaFinal += item.peso();
@@ -112,7 +113,7 @@ namespace Questao1
 
                 int medadePopulacao = geracoesActuais.Count / 2;
                 int metadeDaMetade = medadePopulacao / 2;
-                
+
                 while (indexPiores.Count != metadeDaMetade)
                 {
                     int index = randomizar.Next(0, medadePopulacao - 1);
@@ -223,7 +224,7 @@ namespace Questao1
                     }
                 }
                 geracoesActuais = ordenarPopulacao(geracoesActuais);
-                pais = geracoesActuais.GetRange((geracoesActuais.Count / 2),(geracoesActuais.Count / 2));
+                pais = geracoesActuais.GetRange((geracoesActuais.Count / 2), (geracoesActuais.Count / 2));
                 ////////////////////   test /////////////////////////////
                 // foreach (var gera in geracoesActuais)
                 // {
@@ -240,36 +241,65 @@ namespace Questao1
                 ///////////////////////////////////////////////////////////
                 geracao++;
             }
-            return geracoesActuais[geracoesActuais.Count-1];
+            return geracoesActuais[geracoesActuais.Count - 1];
         }
-        private static List<List<TipoItem>> ordenarPopulacao(List<List<TipoItem>> populacaoInicial)
+        private static List<List<TipoItem>> ordenarPopulacao(List<List<TipoItem>> arr)
         {
-            List<List<TipoItem>> retorno = new List<List<TipoItem>>(populacaoInicial);
-            List<TipoItem> temp = new List<TipoItem>();
-            for (int i = 0; i < retorno.Count; i++)
+            if (arr.Count <= 1)
             {
-                for (int j = 0; j < retorno.Count - 1; j++)
+                return arr;
+            }
+            int mid = arr.Count / 2;
+
+            var l = arr.GetRange(0, mid);
+            var r = arr.GetRange(mid, arr.Count - mid);
+
+            l = ordenarPopulacao(l);
+            r = ordenarPopulacao(r);
+            return merge(l, r);
+        }
+
+        private static List<List<TipoItem>> merge(List<List<TipoItem>> l, List<List<TipoItem>> r)
+        {
+            var ret = new List<List<TipoItem>>();
+            while (l.Count > 0 || r.Count > 0)
+            {
+                if (l.Count == 0)
+                {
+                    ret.Add(r[0]);
+                    r.RemoveAt(0);
+                }
+                else if (r.Count == 0)
+                {
+                    ret.Add(l[0]);
+                    l.RemoveAt(0);
+                }
+                else
                 {
                     int totalTipoItem1 = 0;
                     int totalTipoItem2 = 0;
-                    foreach (var item in retorno[j])
+                    foreach (var item in l[0])
                     {
                         totalTipoItem1 += item.valor();
                     }
-                    foreach (var item in retorno[j + 1])
+                    foreach (var item in r[0])
                     {
                         totalTipoItem2 += item.valor();
                     }
-
-                    if (totalTipoItem1 > totalTipoItem2)
+                    if (totalTipoItem1 <= totalTipoItem2)
                     {
-                        temp = retorno[j];
-                        retorno[j] = retorno[j + 1];
-                        retorno[j + 1] = temp;
+                        ret.Add(l[0]);
+                        l.RemoveAt(0);
+                    }
+                    else
+                    {
+                        ret.Add(r[0]);
+                        r.RemoveAt(0);
                     }
                 }
+
             }
-            return retorno;
+            return ret;
         }
 
         private static List<TipoItem> itemQuntudadeSort(Item[] itens)
@@ -294,5 +324,34 @@ namespace Questao1
             }
             return itemQuantidade;
         }
+        // private static List<List<TipoItem>> ordenarPopulacao(List<List<TipoItem>> populacaoInicial)
+        // {
+        //     List<List<TipoItem>> retorno = new List<List<TipoItem>>(populacaoInicial);
+        //     List<TipoItem> temp = new List<TipoItem>();
+        //     for (int i = 0; i < retorno.Count; i++)
+        //     {
+        //         for (int j = 0; j < retorno.Count - 1; j++)
+        //         {
+        //             int totalTipoItem1 = 0;
+        //             int totalTipoItem2 = 0;
+        //             foreach (var item in retorno[j])
+        //             {
+        //                 totalTipoItem1 += item.valor();
+        //             }
+        //             foreach (var item in retorno[j + 1])
+        //             {
+        //                 totalTipoItem2 += item.valor();
+        //             }
+
+        //             if (totalTipoItem1 > totalTipoItem2)
+        //             {
+        //                 temp = retorno[j];
+        //                 retorno[j] = retorno[j + 1];
+        //                 retorno[j + 1] = temp;
+        //             }
+        //         }
+        //     }
+        //     return retorno;
+        // }
     }
 }
