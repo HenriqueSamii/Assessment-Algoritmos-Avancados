@@ -1,0 +1,1 @@
+5. Defina problemas P, NP e NP-completos. Ofereça exemplos de cada classe e diga como as classificações podem ser obtidas. Este problema não envolve código. Porém, fique à vontade para usar código conforme achar necessário.

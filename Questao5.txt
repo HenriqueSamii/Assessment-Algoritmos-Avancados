@@ -1,0 +1,10 @@
+5. Explique o funcionamento dos algoritmos abaixo. Este problema não envolve código. Porém, fique à vontade para usar código conforme achar necessário.
+
+    a. Bubblesort
+    b. Insersort
+    c. Mergesort
+a. Bubble Sort é um algoritmo de ordenação que compara pares de elementos adjacente e troca eles de posição caso eles estejam errados, repetindo essa comparação com o próximo par de elementos até o final da coleção. Esse processo vai se repetir múltiplas vezes na coleção até que ela se encontre organizada.
+
+b. Insert Sort é um algoritmo de ordenação que vai percorrer pelos elementos de uma coleção até achar um elemento que tenha na sua esquerda um valor maior que ele. Quando isso acontecer ele vai ser movido uma casa para a esquerda até ele encontrar um elemento na sua esquerda menor que ele. Após isso ele será posicionado na casa à direita desse menor elemento e os restantes dos elemento por qual ele passou vão ser movidos uma casa a direita.  Esse processo vai se repetir até que ela passe por todos os elementos da coleção, no caso de este exemplo por ordem da esquerda a direita.
+
+c. Merge Sort é um algoritmo de ordenação que vai recursivamente dividir a coleção em subconjuntos até que eles tenham só um elemento. Depois disso ele vai pegar dois desses subconjuntos e criar um subconjunto ordenado. Isso se vai repetir até que essas uniões criem um único subconjunto.

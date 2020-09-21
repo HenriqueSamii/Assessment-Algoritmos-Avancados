@@ -5,4 +5,4 @@ Sendo "n" o número de moedas.
 2. Crie uma versão deste algoritmo em programação dinâmica. Você pode ilustrar a tabela construída para o exemplo citado acima como forma de elucidar melhor sua solução, caso desejar. Informe a complexidade do algoritmo.
 Complexidade do algoritmo - 0(n*w)
 Sendo "n" o número de moedas.
-Sendo "w" o número de colunas ou seje o total numero de colunas da coluna 0-1-2-3-...-Troco == Troco+1 = w, Troco+1 por conta da coluna 0.
+Sendo "w" o número de colunas ou seje o total numero de colunas da coluna 0-1-2-3-...-Troco == Troco+1 == w. Troco+1 por conta da coluna de 0.
