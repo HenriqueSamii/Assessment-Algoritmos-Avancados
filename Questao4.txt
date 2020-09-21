@@ -1,6 +1,6 @@
 4. Defina problemas P, NP e NP-completos. Ofereça exemplos de cada classe e diga como as classificações podem ser obtidas. Este problema não envolve código. Porém, fique à vontade para usar código conforme achar necessário.
-P são problemas que se encontram dentro de NP e que podem ser verificados se um resultado está correto ou serem resolvidos em um tempo razoável, ou seja, a sua dificuldade vai ter uma subida constante perante o tamanho do problema. Exemplos deste tipo de problema são adições, subtrações, labirintos e ordenação de listas.
+P são problemas que estão contidos em NP e que podem ser verificados se um resultado está correto ou serem resolvidos em um tempo razoável, ou seja, a sua dificuldade vai ter uma subida constante perante o tamanho do problema. Exemplos deste tipo de problema são adições, subtrações, labirintos e ordenação de listas.
 
 NP são problemas que podem ser verificados se um resultado está correto em um tempo razoável mas que não tem um tempo razoável ou certeza que eles possam ser solucionados, ou seja, a sua dificuldade vai crescer exponencialmente perante o tamanho do problema. Exemplos deste tipo de problema são quebra-cabeças, jogo do sudoku e enovelamento de proteínas.
 
-NP-completo são problemas que se encontram dentro de NP mas em que não incluem P. Um exemplo deste tipo de problema é qual a melhor próxima jogada para se fazer numa partida de xadrez.
+NP-completo são problemas que estão contidos em NP mas em que não incluem P. Um exemplo deste tipo de problema é qual a melhor próxima jogada para se fazer numa partida de xadrez.
