@@ -31,7 +31,7 @@ namespace Questao3
             {
                 ItemTabela novoItemTabela = new ItemTabela(caminho.NomeCaminho,
                                                         caminho,
-                                                        10000);
+                                                        infinitade);
                 if (inicioNome == caminho.NomeCaminho)
                 {
                     novoItemTabela.MinimaDistancia = inicio;
@@ -40,72 +40,74 @@ namespace Questao3
             }
             while (todosCaminhos.Count != 0)
             {
+                int indexTabelaHulder = 0;
+                int indexTodosCaminhosAindaPorPassarHolder = 0;
                 int valorMinimoDeCaminhoNaoVisitado = infinitade;
-                for (int i = 0; i < tabela.Count; i++)
+                for (int indexTabela = 0; indexTabela < tabela.Count; indexTabela++)
                 {
-                    for (int j = 0; j < todosCaminhos.Count; j++)
+                    for (int indexTodosCaminhosAindaPorPassar = 0; indexTodosCaminhosAindaPorPassar < todosCaminhos.Count; indexTodosCaminhosAindaPorPassar++)
                     {
-                        if (tabela[i].NomeDoVector == todosCaminhos[j].NomeCaminho
+                        if (tabela[indexTabela].NomeDoVector == todosCaminhos[indexTodosCaminhosAindaPorPassar].NomeCaminho
                             &&
-                            tabela[i].MinimaDistancia < valorMinimoDeCaminhoNaoVisitado)
+                            tabela[indexTodosCaminhosAindaPorPassar].MinimaDistancia < valorMinimoDeCaminhoNaoVisitado)
                         {
-                            // System.Console.WriteLine($"{valorMinimoDeCaminhoNaoVisitado} {i} {j}");
-                            valorMinimoDeCaminhoNaoVisitado = tabela[i].MinimaDistancia;
-                            // System.Console.WriteLine(valorMinimoDeCaminhoNaoVisitado);
-                            foreach (var rota in tabela[i].Vetor.Rotas)
-                            {
-                                int indexTabelaMendorDistancia = 0;
-                                foreach (var item in tabela)
-                                {
-                                    if (rota.LocalDeChegada.NomeCaminho == item.NomeDoVector)
-                                    {
-                                        break;
-                                    }
-                                    indexTabelaMendorDistancia++;
-                                }
-                                //System.Console.WriteLine(rota.LocalDeChegada.NomeCaminho +" index tablea " + indexTabelaMendorDistancia);
-                                int minDistanciaTeste = rota.Peso + valorMinimoDeCaminhoNaoVisitado;
-                                //System.Console.WriteLine(minDistanciaTeste);
-                                //System.Console.WriteLine(tabela[indexTabelaMendorDistancia].MinimaDistancia);
-                                if (minDistanciaTeste > tabela[indexTabelaMendorDistancia].MinimaDistancia)
-                                {
-                                    System.Console.WriteLine(tabela[indexTabelaMendorDistancia].MinimaDistancia);
-                                    tabela[indexTabelaMendorDistancia].MinimaDistancia = minDistanciaTeste;
-                                    System.Console.WriteLine(tabela[indexTabelaMendorDistancia].MinimaDistancia);
-                                    tabela[indexTabelaMendorDistancia].NomeDoVectorAnterior = tabela[i].Vetor.NomeCaminho;
-                                    tabela[indexTabelaMendorDistancia].VetorAnterior = tabela[i].Vetor;
-                                }
-                            }
-                            todosCaminhos.RemoveAt(j);
-
-                            ///break os dois for loops
-                            i = tabela.Count;
-                            j = todosCaminhos.Count;
+                            //System.Console.WriteLine($"{valorMinimoDeCaminhoNaoVisitado} {i} {j}");
+                            valorMinimoDeCaminhoNaoVisitado = tabela[indexTabela].MinimaDistancia;
+                            indexTabelaHulder = indexTabela;
+                            indexTodosCaminhosAindaPorPassarHolder = indexTodosCaminhosAindaPorPassar;
+                            break;
                         }
                     }
                 }
+                //System.Console.WriteLine($"{valorMinimoDeCaminhoNaoVisitado} {i} {j}");
+                valorMinimoDeCaminhoNaoVisitado = tabela[indexTabelaHulder].MinimaDistancia;
+                //System.Console.WriteLine(valorMinimoDeCaminhoNaoVisitado);
+                foreach (var rota in tabela[indexTabelaHulder].Vetor.Rotas)
+                {
+                    int indexTabelaMendorDistancia = 0;
+                    foreach (var item in tabela)
+                    {
+                        if (rota.LocalDeChegada.NomeCaminho == item.NomeDoVector)
+                        {
+                            break;
+                        }
+                        indexTabelaMendorDistancia++;
+                    }
+                    int minDistanciaTeste = rota.Peso + valorMinimoDeCaminhoNaoVisitado;
+                    if (minDistanciaTeste < tabela[indexTabelaMendorDistancia].MinimaDistancia)
+                    {
+                        tabela[indexTabelaMendorDistancia].MinimaDistancia = minDistanciaTeste;
+                        tabela[indexTabelaMendorDistancia].NomeDoVectorAnterior = tabela[indexTabelaHulder].Vetor.NomeCaminho;
+                        tabela[indexTabelaMendorDistancia].VetorAnterior = tabela[indexTabelaHulder].Vetor;
+                    }
+                }
+                todosCaminhos.RemoveAt(indexTodosCaminhosAindaPorPassarHolder);
             }
             /// /////
-            // string nomeActual = pontoFinalNome;
-            // int indexRotaFinal = tabela.FindIndex(x => x.NomeDoVector == nomeActual);
-            // int minimaDistanciaCW = tabela[indexRotaFinal].MinimaDistancia;
-            // while(minimaDistanciaCW > -1){
-            //     int distancia = 0;
-            //     string caminho = inicioNome;
-            //     if (minimaDistanciaCW != 0)
-            //     {
-            //         distancia = tabela[indexRotaFinal].MinimaDistancia;
-            //         caminho = tabela[indexRotaFinal].NomeDoVector;
-            //         nomeActual = tabela[indexRotaFinal].NomeDoVectorAnterior;
-            //         indexRotaFinal = tabela.FindIndex(x => x.NomeDoVector == nomeActual);
-            //         minimaDistanciaCW = tabela[indexRotaFinal].MinimaDistancia;
-            //     }
-            //     System.Console.WriteLine($" --> Ponto: {caminho} - Distancia: {distancia}");
-            // }
+            System.Console.WriteLine("Tabela de Percursos Mais Rapidos");
             foreach (var itemTabela in tabela)
             {
-                System.Console.WriteLine($" --> Ponto: {itemTabela.NomeDoVector} --- Distancia: {itemTabela.MinimaDistancia} --- Anterior: {itemTabela.NomeDoVectorAnterior}");
+                System.Console.WriteLine($" --> Ponto: {itemTabela.NomeDoVector} --- Distancia Total: {itemTabela.MinimaDistancia} --- Anterior: {itemTabela.NomeDoVectorAnterior}");
             }
+
+            //////
+            System.Console.WriteLine("\nPercurso Mais Rapido para " + pontoFinalNome);
+            //////
+            string nomeActual = pontoFinalNome;
+            int indexRotaFinal = tabela.FindIndex(x => x.NomeDoVector == nomeActual);
+            int minimaDistanciaCW = tabela[indexRotaFinal].MinimaDistancia;
+            while (minimaDistanciaCW > 0)
+            {
+                int distancia = 0;
+                string caminho = inicioNome;
+                distancia = tabela[indexRotaFinal].MinimaDistancia;
+                caminho = tabela[indexRotaFinal].NomeDoVector;
+                nomeActual = tabela[indexRotaFinal].NomeDoVectorAnterior;
+                indexRotaFinal = tabela.FindIndex(x => x.NomeDoVector == nomeActual);
+                minimaDistanciaCW = tabela[indexRotaFinal].MinimaDistancia;
+                System.Console.WriteLine($" --> Ponto: {caminho} - Distancia Total: {distancia}");
+            }
+            System.Console.WriteLine($" --> Ponto: {inicioNome} - Distancia Total: {inicio}");
         }
     }
 }
