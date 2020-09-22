@@ -1,1 +1,2 @@
 3. Implemente o Algoritmo de Dijkstra para uma estrutura de dados de grafo dirigido ou não dirigido com arestas de peso não negativo, defina e justifique qual é sua complexidade de pior caso.
+A sua complexidade de pior caso e de O(m + n log n) onde m é o número de arestas e n é o número de vértices. Esse algoritmo tem essa complexidade pois ele tem que passar por todos os vértices e arestas conectadas a ele e tem que comparar se o paras esses próximos vértices é menor ou não que os que ela já tem com outras conexões.
