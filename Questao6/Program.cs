@@ -21,15 +21,15 @@ namespace Questao6
         }
         private static List<int> quickSort(List<int> arr)
         {
-            if (arr.Count == 1)
+            if (arr.Count <= 1)
             {
                 return arr;
             }
-            else if (arr.Count == 2)
-            {
-                return orderPivos(arr);
-            }
             arr = orderPivos(arr);
+            if (arr.Count == 2)
+            {
+                return arr;
+            }
             int pivo1 = 0;
             int pivo2 = arr.Count-1;
             var itemPivo1 = new List<int>{arr[pivo1]};
